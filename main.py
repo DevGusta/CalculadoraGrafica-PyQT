@@ -24,13 +24,15 @@ class Calculadora(QMainWindow):
         self.add_btn(QPushButton('8'), 1, 1, 1, 1)
         self.add_btn(QPushButton('9'), 1, 2, 1, 1)
         self.add_btn(QPushButton('/'), 1, 3, 1, 1)
-        self.add_btn(QPushButton('C'), 1, 4, 1, 1, lambda: self.display.setText(''))
+        self.add_btn(QPushButton('C'), 1, 4, 1, 1, lambda: self.display.setText(''),
+                     'background: blue; color: white; font-weight: 700;')
 
         self.add_btn(QPushButton('4'), 2, 0, 1, 1)
         self.add_btn(QPushButton('5'), 2, 1, 1, 1)
         self.add_btn(QPushButton('6'), 2, 2, 1, 1)
         self.add_btn(QPushButton('*'), 2, 3, 1, 1)
-        self.add_btn(QPushButton('<-'), 2, 4, 1, 1, lambda: self.display.setText(self.display.text()[:-1]))
+        self.add_btn(QPushButton('<-'), 2, 4, 1, 1, lambda: self.display.setText(self.display.text()[:-1]),
+                     'background: blue; color: white; font-weight: 700;')
 
         self.add_btn(QPushButton('1'), 3, 0, 1, 1)
         self.add_btn(QPushButton('2'), 3, 1, 1, 1)
@@ -42,11 +44,11 @@ class Calculadora(QMainWindow):
         self.add_btn(QPushButton('0'), 4, 1, 1, 1)
         self.add_btn(QPushButton('.'), 4, 2, 1, 1)
         self.add_btn(QPushButton('+'), 4, 3, 1, 1)
-        self.add_btn(QPushButton('='), 4, 4, 1, 1, self.equals)
+        self.add_btn(QPushButton('='), 4, 4, 1, 1, self.equals, 'background: black; color: white; font-weight: 700;')
 
         self.setCentralWidget(self.cw)
 
-    def add_btn(self, btn, row, col, rowspan, colspan, funcao=None):
+    def add_btn(self, btn, row, col, rowspan, colspan, funcao=None, style=None):
         self.grid.addWidget(btn, row, col, rowspan, colspan)
         if not funcao:
             btn.clicked.connect(lambda: self.display.setText(self.display.text() + btn.text()))
@@ -55,14 +57,16 @@ class Calculadora(QMainWindow):
             btn.clicked.connect(funcao)
             btn.setSizePolicy(QSizePolicy.Preferred, QSizePolicy.Expanding)
 
+        if style:
+            btn.setStyleSheet(style)
+
     def equals(self):
         try:
             self.display.setText(
                 str(eval(self.display.text()))
             )
-        except Exception as e:
+        except Exception:
             self.display.setText("Conta inválida")
-
 
 
 if __name__ == '__main__':
